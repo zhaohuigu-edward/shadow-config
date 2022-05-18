@@ -1,0 +1,322 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+tags:
+- name: UserInfoController
+  description: 用户管理接口
+- name: MenuInfoController
+  description: 菜单管理接口
+paths:
+  /menu/update-menu:
+    post:
+      tags:
+      - MenuInfoController
+      operationId: updateMenu
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuAddParam'
+        required: true
+      responses:
+        200:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Response'
+  /menu/add-menu:
+    post:
+      tags:
+      - MenuInfoController
+      operationId: addMenu
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuAddParam'
+        required: true
+      responses:
+        200:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Response'
+  /user/add-user:
+    post:
+      tags:
+      - UserInfoController
+      operationId: addUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAddDTO'
+        required: true
+      responses:
+        200:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Response'
+  /user/update-user:
+    post:
+      tags:
+      - UserInfoController
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateDTO'
+        required: true
+      responses:
+        200:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Response'
+  /user/list-page:
+    post:
+      tags:
+      - UserInfoController
+      operationId: listPage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPageQueryDTO'
+        required: true
+      responses:
+        200:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseBasePageModelResultUserDetailResult'
+  /user/delete-user:
+    post:
+      tags:
+      - UserInfoController
+      operationId: deleteUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDeleteDTO'
+        required: true
+      responses:
+        200:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Response'
+components:
+  schemas:
+    MenuAddParam:
+      required:
+      - enableFlag
+      - menuIndex
+      - menuName
+      - menuParentId
+      type: object
+      properties:
+        menuName:
+          type: string
+          description: 菜单名称
+        menuParentId:
+          type: string
+          description: 菜单父id
+        menuIndex:
+          type: integer
+          description: 菜单顺序
+          format: int32
+        enableFlag:
+          type: boolean
+          description: 是否启用
+    Response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: 请求是否成功
+        errorCode:
+          type: string
+          description: 错误编码
+        errorMsg:
+          type: string
+          description: 错误消息
+        data:
+          type: object
+    UserAddDTO:
+      required:
+      - mobile
+      - operateDate
+      - operateId
+      - realName
+      - sexType
+      - userName
+      - userPassword
+      type: object
+      properties:
+        operateDate:
+          type: string
+          description: 更改日期
+        operateId:
+          type: string
+          description: 操作人id
+        userName:
+          type: string
+          description: 用户名
+        userPassword:
+          type: string
+          description: 密码
+        realName:
+          type: string
+          description: 真实姓名
+        sexType:
+          type: integer
+          description: 性别类型 1-男，2-女，3-不详
+          format: int32
+        mobile:
+          type: string
+          description: 手机号
+    UserUpdateDTO:
+      required:
+      - mobile
+      - operateDate
+      - operateId
+      - realName
+      - sexType
+      - userName
+      - userPassword
+      type: object
+      properties:
+        operateDate:
+          type: string
+          description: 更改日期
+        operateId:
+          type: string
+          description: 操作人id
+        userName:
+          type: string
+          description: 用户名
+        userPassword:
+          type: string
+          description: 密码
+        realName:
+          type: string
+          description: 真实姓名
+        sexType:
+          type: integer
+          description: 性别类型 1-男，2-女，3-不详
+          format: int32
+        mobile:
+          type: string
+          description: 手机号
+    UserPageQueryDTO:
+      required:
+      - mobile
+      - page
+      - pageSize
+      - realName
+      - sexType
+      - userName
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        userName:
+          type: string
+          description: 用户名
+        realName:
+          type: string
+          description: 真实姓名
+        sexType:
+          type: integer
+          description: 性别类型 1-男，2-女，3-不详
+          format: int32
+        mobile:
+          type: string
+          description: 手机号
+    BasePageModelResultUserDetailResult:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int64
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDetailResult'
+    ResponseBasePageModelResultUserDetailResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: 请求是否成功
+        errorCode:
+          type: string
+          description: 错误编码
+        errorMsg:
+          type: string
+          description: 错误消息
+        data:
+          $ref: '#/components/schemas/BasePageModelResultUserDetailResult'
+    UserDetailResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id
+          format: int32
+        userName:
+          type: string
+          description: 用户名
+        userPassword:
+          type: string
+          description: 密码
+        realName:
+          type: string
+          description: 真实姓名
+        sexType:
+          type: integer
+          description: 性别类型 1-男，2-女，3-不详
+          format: int32
+        mobile:
+          type: string
+          description: 手机号
+    UserDeleteDTO:
+      required:
+      - operateDate
+      - operateId
+      - userId
+      type: object
+      properties:
+        operateDate:
+          type: string
+          description: 更改日期
+        operateId:
+          type: string
+          description: 操作人id
+        userId:
+          type: string
+          description: 人员id
